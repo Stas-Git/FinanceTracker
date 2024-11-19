@@ -1,0 +1,43 @@
+﻿@model Expense_Tracker.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Персональний кабінет";
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="widget p-5" style="background-color:#212b36; width: 130%;">
+            <h3 class="text-light mb-4">Персональний кабінет</h3>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+
+            <form asp-action="Profile" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="Id" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label class="form-label text-light">Ім'я користувача</label>
+                    <ejs-textbox id="userName" ejs-for="UserName" floatLabelType="Always"></ejs-textbox>
+                    <span asp-validation-for="UserName" class="text-danger fs-6"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-light">Електронна пошта</label>
+                    <ejs-textbox id="email" ejs-for="Email" floatLabelType="Always" type="email"></ejs-textbox>
+                    <span asp-validation-for="Email" class="text-danger fs-6"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-light">Новий пароль</label>
+                    <ejs-textbox id="password" ejs-for="Password" floatLabelType="Always" type="password"></ejs-textbox>
+                    <span asp-validation-for="Password" class="text-danger fs-6"></span>
+                </div>
+
+                <ejs-button id="submit" type="submit" content="Зберегти зміни" cssClass="e-success"></ejs-button>
+            </form>
+        </div>
+    </div>
+</div>
