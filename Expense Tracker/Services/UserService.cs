@@ -38,6 +38,11 @@ public class UserService
         return _context.Users.FirstOrDefault(u => u.Email == email && u.Password == hashedPassword); // Знайти користувача по email та паролю
     }
 
+    public User GetUserById(int id)
+    {
+        return _context.Users.FirstOrDefault(u => u.Id == id);
+    }
+
     // Метод для отримання користувача по email
     public User? GetUserByEmail(string email)
     {

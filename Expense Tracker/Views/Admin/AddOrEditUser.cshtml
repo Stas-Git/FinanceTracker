@@ -1,0 +1,64 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Додати користувача" : "Редагувати користувача";
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="widget p-5" style="background-color:#212b36; width: 130%;">
+            <h3 class="text-light mb-4">@ViewData["Title"]</h3>
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <form asp-action="AddOrEditUser" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label">Ім'я користувача</label>
+                    <input asp-for="UserName" class="form-control" placeholder="Введіть ім'я" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Електронна пошта</label>
+                    <input asp-for="Email" class="form-control" placeholder="Введіть email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Role" class="form-label">Роль</label>
+                    <select asp-for="Role" class="form-control">
+                        <option value="User">Користувач</option>
+                        <option value="Admin">Адміністратор</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+
+                @if (Model.Id == 0)
+                {
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Пароль</label>
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Введіть пароль" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                }
+
+                <button type="submit" class="btn btn-primary">Зберегти</button>
+                <a href="@Url.Action("Users", "Admin")" class="btn btn-secondary">Скасувати</a>
+            </form>
+        </div>
+    </div>
+</div>

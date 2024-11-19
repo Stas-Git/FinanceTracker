@@ -6,6 +6,7 @@ using Expense_Tracker.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 public class AccountController : Controller
 {
@@ -104,8 +105,8 @@ public class AccountController : Controller
     {
         var userEmail = User.FindFirstValue(ClaimTypes.Email); // Це поверне електронну пошту з claims
 
-
         var user = _userService.GetUserByEmail(userEmail);
+
 
         if (user == null)
         {
@@ -124,48 +125,51 @@ public class AccountController : Controller
 
     // Оновлення профілю користувача (POST)
     [HttpPost]
-    public IActionResult Profile(ProfileViewModel model)
+    [Authorize]
+    public async Task<IActionResult> Profile(ProfileViewModel model)
     {
         if (ModelState.IsValid)
         {
-            // Отримуємо поточного користувача з Email, який зберігається в Claims
-            var userEmail = User.Identity.Name;
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                _logger.LogWarning("Claims missing. Redirecting to login.");
+                return RedirectToAction("Login");
+            }
 
             var user = _userService.GetUserByEmail(userEmail);
 
             if (user == null)
             {
-                return RedirectToAction("Login"); // Якщо користувач не знайдений
+                _logger.LogWarning("User not found for email: {Email}", userEmail);
+                return RedirectToAction("Login");
             }
 
-
-            // Оновлюємо дані користувача
             user.UserName = model.UserName;
             user.Email = model.Email;
 
-            // Не забувайте, якщо є зміни в паролі, потрібно їх хешувати та оновити
             if (!string.IsNullOrEmpty(model.Password))
             {
-                user.Password = _userService.HashPassword(model.Password); // Хешуємо пароль перед збереженням
+                user.Password = _userService.HashPassword(model.Password);
             }
 
             var result = _userService.UpdateUser(user);
 
             if (result)
             {
-                // Оновлення інформації про користувача в Claims
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role)
-                };
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                 TempData["SuccessMessage"] = "Профіль успішно оновлено!";
-                return RedirectToAction("Profile"); // Перенаправляємо на сторінку профілю після оновлення
+                return RedirectToAction("Profile");
             }
 
             ModelState.AddModelError("", "Не вдалося оновити профіль.");
