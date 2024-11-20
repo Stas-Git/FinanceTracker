@@ -1,0 +1,75 @@
+﻿@model List<Expense_Tracker.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Додати користувача" : "Редагувати користувача";
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <a href="/Admin/AddOrEditUser" class="btn btn-success mb-3">+ Додати користувача</a>
+
+        <div class="mb-3">
+            <input type="text" id="userSearch" class="form-control" placeholder="Пошук користувача..." />
+        </div>
+        <ejs-grid id="users" dataSource="@Model" gridLines="None"
+                  allowSorting="true" allowPaging="true">
+            <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
+            <e-grid-columns>
+                <e-grid-column headerText="ID" field="Id" width="100px"></e-grid-column>
+                <e-grid-column headerText="Ім'я користувача" field="UserName"></e-grid-column>
+                <e-grid-column headerText="Email" field="Email"></e-grid-column>
+                <e-grid-column headerText="Роль" template="#roleColumnTemplate" width="150px"></e-grid-column>
+                <e-grid-column headerText="Дії" template="#actionColumnTemplate" width="150px"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+
+<script>
+    // Локалізація для пагінації
+    ej.base.L10n.load({
+        'en-US': {
+            'pager': {
+                'currentPageInfo': 'Сторінка {0} з {1}  ',
+                'totalItemsInfo': 'Елементів: {0}',
+                'firstPageTooltip': 'Перша сторінка',
+                'lastPageTooltip': 'Остання сторінка',
+                'nextPageTooltip': 'Наступна сторінка',
+                'previousPageTooltip': 'Попередня сторінка',
+                'nextPagerTooltip': 'До наступної навігації',
+                'previousPagerTooltip': 'До попередньої навігації'
+            }
+        }
+    });
+
+    // Пошук користувача
+    document.getElementById("userSearch").addEventListener("input", function () {
+        var searchValue = this.value.toLowerCase(); // Отримати значення з поля пошуку
+        var grid = document.getElementById("users").ej2_instances[0]; // Отримати екземпляр грида
+        grid.search(searchValue); // Використовувати вбудовану функцію пошуку
+    });
+
+</script>
+
+<script id="roleColumnTemplate" type="text/x-template">
+    ${if(Role=="Admin")}
+        <span class="badge bg-primary">Адмін</span>
+    ${else}
+        <span class="badge bg-secondary">Користувач</span>
+    ${/if}
+</script>
+
+<script id="actionColumnTemplate" type="text/x-template">
+    <div class="d-flex flex-row justify-content-start">
+        <a class="btn btn-sm no-a-decoration" href="/Admin/AddOrEditUser/${Id}">
+            <i class="fa-solid fa-pen fa-lg"></i>
+        </a>
+        <form action="/Admin/DeleteUser/${Id}" method="post">
+    @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-sm btn-link no-a-decoration"
+            onclick="return confirm(&quot;Ви впевнені, що хочете видалити цього користувача?&quot;)">
+                <i class="fa-solid fa-trash-can fa-lg text-danger"></i>
+            </button>
+        </form>
+    </div>
+</script>

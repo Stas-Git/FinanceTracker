@@ -17,7 +17,7 @@ public class UserService
     public bool RegisterUser(User user)
     {
         // Перевірка, чи існує вже користувач з таким email
-        if (_context.Users.Any(u => u.Email == user.Email))
+        if (_context.Users.Any(u => u.Id == user.Id))
         {
             return false; // Користувач з таким email вже існує
         }
@@ -31,7 +31,11 @@ public class UserService
         return true; // Успішно зареєстровано
     }
 
-    // Метод для перевірки облікових даних користувача
+    public User GetUserById(int id)
+    {
+        return _context.Users.FirstOrDefault(u => u.Id == id);
+    }
+
     public User? ValidateUser(string email, string password)
     {
         string hashedPassword = HashPassword(password); // Хешуємо введений пароль
