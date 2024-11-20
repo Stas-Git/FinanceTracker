@@ -42,15 +42,16 @@
             <i id="sidebar-toggler" class="fa-solid"></i>
         </div>
 
-        <div class="profile-wrapper">
+        <div class="profile-wrapper" id="profileWrapper" style="cursor: pointer;">
             <img class="profile-pic" src="~/profile.jpg" alt="Profile Picture" />
             <div class="titles d-flex flex-column ps-3">
-                <h6 class="mb-0">Персональний аккаунт</h6>
+                <h6 class="mb-0" style="color: white;">Персональний Кабінет</h6>
                 <span class="text-muted">
                     @(User.Identity.IsAuthenticated ? User.Identity.Name : "Ваше ім'я")
                 </span>
             </div>
         </div>
+
 
 
         <ejs-menu id="menu"
@@ -68,4 +69,10 @@
         };
     });
 
+</script>
+
+<script>
+    document.getElementById("profileWrapper").addEventListener("click", function () {
+        window.location.href = "/Account/Profile";
+    });
 </script>
