@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+namespace Expense_Tracker.Models;
 
 public class UserViewModel
 {
