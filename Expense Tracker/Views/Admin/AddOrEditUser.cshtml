@@ -10,6 +10,11 @@
         <div class="widget p-5" style="background-color:#212b36">
             <h2>@ViewData["Title"]</h2>
 
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+
             <form asp-action="AddOrEditUser" method="post">
                 <input type="hidden" asp-for="Id" />
 

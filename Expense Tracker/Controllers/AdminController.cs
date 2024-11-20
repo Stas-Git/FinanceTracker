@@ -123,7 +123,6 @@ namespace Expense_Tracker.Controllers
                         if (result)
                         {
                             TempData["SuccessMessage"] = "Дані користувача успішно оновлено!";
-                            return RedirectToAction("Users", "Admin");
                         }
                         else
                         {
