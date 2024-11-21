@@ -16,16 +16,14 @@ namespace Expense_Tracker.Controllers
         public TransactionController(ApplicationDbContext context)
         {
             _context = context;
-        }
+        }   
 
-        // GET: Transaction
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Transactions.Include(t => t.Category);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Transaction/AddOrEdit
         public IActionResult AddOrEdit(int id = 0)
         {
             PopulateCategories();
@@ -35,9 +33,6 @@ namespace Expense_Tracker.Controllers
                 return View(_context.Transactions.Find(id));
         }
 
-        // POST: Transaction/AddOrEdit
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit([Bind("TransactionId,CategoryId,Amount,Note,Date")] Transaction transaction)
@@ -55,7 +50,6 @@ namespace Expense_Tracker.Controllers
             return View(transaction);
         }
 
-        // POST: Transaction/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

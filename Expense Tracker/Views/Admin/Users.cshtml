@@ -1,7 +1,7 @@
 ﻿@model List<Expense_Tracker.Models.User>
 
 @{
-    ViewData["Title"] = "Manage Users";
+    ViewData["PageTitle"] = "Адмін панель";
     ViewData["PageActionUrl"] = "/Admin/AddOrEditUser"; 
     ViewData["PageActionText"] = "+ Додати нового користувача";
 }
@@ -26,7 +26,6 @@
 </div>
 
 <script>
-    // Локалізація для пагінації
     ej.base.L10n.load({
         'en-US': {
             'pager': {
@@ -42,11 +41,10 @@
         }
     });
 
-    // Пошук користувача
     document.getElementById("userSearch").addEventListener("input", function () {
-        var searchValue = this.value.toLowerCase(); // Отримати значення з поля пошуку
-        var grid = document.getElementById("users").ej2_instances[0]; // Отримати екземпляр грида
-        grid.search(searchValue); // Використовувати вбудовану функцію пошуку
+        var searchValue = this.value.toLowerCase(); 
+        var grid = document.getElementById("users").ej2_instances[0]; 
+        grid.search(searchValue);
     });
 
 </script>

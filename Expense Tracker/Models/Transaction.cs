@@ -12,6 +12,8 @@ namespace Expense_Tracker.Models
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
+        [Required(ErrorMessage = "Сума є обов'язковою.")]
+        [RegularExpression(@"^\d+(\,\d{1,2})?$", ErrorMessage = "Неправильно введена сума. Перевірте введені дані.")]
         [Range(1, int.MaxValue, ErrorMessage = "Кількість має бути більше за 0.")]
         public int Amount { get; set; }
 

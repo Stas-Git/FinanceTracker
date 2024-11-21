@@ -1,6 +1,7 @@
 using Expense_Tracker.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllersWithViews();
 
 // Реєструємо UserService для впровадження залежностей
 builder.Services.AddScoped<UserService>();
+
+CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("uk-UA");
+CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("uk-UA");
 
 // Конфігурація з'єднання з базою даних
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -41,12 +41,11 @@
 </script>
 
 <script>
-    // Налаштування локалізації для зміни текстів у навігації сторінок
     ej.base.L10n.load({
         'en-US': {
             'pager': {
-                'currentPageInfo': 'Сторінка {0} з {1}', // Зміна тексту для поточної сторінки
-                'totalItemsInfo': 'Елементів: {0}', // Зміна тексту кількості елементів
+                'currentPageInfo': 'Сторінка {0} з {1}', 
+                'totalItemsInfo': 'Елементів: {0}', 
                 'firstPageTooltip': 'Перша сторінка',
                 'lastPageTooltip': 'Остання сторінка',
                 'nextPageTooltip': 'Наступна сторінка',
@@ -59,6 +58,6 @@
     document.getElementById("transactionSearch").addEventListener("input", function () {
         var searchValue = this.value.toLowerCase();
         var grid = document.getElementById("transactions").ej2_instances[0];
-        grid.search(searchValue); // Фільтрація грида за введеним текстом
+        grid.search(searchValue);
     });
 </script>
