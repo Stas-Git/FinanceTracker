@@ -461,3 +461,7 @@ img.profile-pic {
         outline: none; /* Прибираємо стандартний обводку */
         background-color: #1d2a35; /* Можна змінити фоновий колір при фокусі для ефекту */
     }
+
+#google_translate_element {
+    text-align: right;
+}
